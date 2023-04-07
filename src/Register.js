@@ -1,9 +1,9 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <>
+class Register extends Component {
+    render() {
+        return (
+            <>
                 <div class="container">
 <br/>  <p class="text-center">More bootstrap 4 components on <a href="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</a></p>
 <hr/>
@@ -106,7 +106,8 @@ and product landing pages</p>   <br/>
 <br/><br/>
 </article>
             </>
-  );
+        );
+    }
 }
 
-export default App;
+export default Register;
