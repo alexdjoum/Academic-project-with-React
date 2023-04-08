@@ -1,110 +1,186 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Register extends Component {
+    state = {
+        loader: false,
+        error: false,
+        firstname: "",
+        lastname: "",
+        email: "",
+        password: "",
+        gender: "",
+        country: "",
+        city: ""
+    }
+
+    updateField = (field, value) => {
+        // parent className change handler is always called with field name and value
+        this.setState({[field]: value});
+    }
+    handlingForm = (e) => {
+        e.preventDefault()
+        const formdata = new FormData();
+        formdata.append('lastname',this.state.lastname);
+        formdata.append('name', this.state.firstname);
+        formdata.append('password', this.state.password);
+        formdata.append('email',this.state.email);
+        formdata.append('gender', this.state.gender);
+        formdata.append('country', this.state.country);
+        formdata.append('city', this.state.city);
+
+        if (this.state.lastname && this.state.email && this.state.password) {
+            console.log('bond')
+            fetch('http://127.0.0.1:8000/api/utilisateur/inscription', {
+                method: 'POST',
+                body: JSON.stringify({ formdata }),
+                headers: { 'Content-Type': 'application/json' },
+              })
+                .then(res => console.log(res.json()) )
+                //.then(json => this.setState(res.))
+        }
+
+        console.log(...formdata);
+    }
     render() {
+        console.log(this.state.firstname)
+        // const {loader, error, firstname, lastname, email, password, gender, country, city} = this.state;
         return (
             <>
-                <div class="container">
-<br/>  <p class="text-center">More bootstrap 4 components on <a href="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</a></p>
-<hr/>
+                <div className="container">
+                <br/>  <p className="text-center">More bootstrap 4 components on <Link to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</Link></p>
+                <hr/>
+                <div className="row justify-content-center">
+                <div className="col-md-6">
+                <div className="card">
+                <header className="card-header">
+                    <Link to="" className="float-right btn btn-outline-primary mt-1">Log in</Link>
+                    <h4 className="card-title mt-2">Sign up</h4>
+                </header>
+                <article className="card-body">
+                <form onSubmit={this.handlingForm}>
+                    <div className="form-row">
+                        <div className="col form-group">
+                            <label>First name </label>   
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder=""
+                                onChange={e => this.updateField("firstname", e.target.value)}
+                                />
+                        </div> 
+                        {/* <div className="col form-group">
+                            <label>Last name</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                placeholder=" "
+                                onChange={e => this.updateField("lastname", e.target.value)}
+                            />
+                        </div>  */}
+                    </div>
+                    {/* <!-- form-row end.// --> */}
+                    <div className="form-group">
+                        <label>Email address</label>
+                        <input 
+                            type="email" 
+                            className="form-control" 
+                            placeholder="" 
+                            onChange={e => this.updateField("email", e.target.value)}    
+                        />
+                        <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    {/* <!-- form-group end.// --> */}
+                    {/* <div className="form-group">
+                            <label className="form-check form-check-inline">
+                        <input 
+                            className="form-check-input" 
+                            type="radio" 
+                            name="gender" 
+                            value="option1"
+                            onChange={e => this.updateField("gender", e.target.value)} 
+                        />
+                        <span className="form-check-label"> Male </span>
+                        </label>
+                        <label className="form-check form-check-inline">
+                        <input 
+                            className="form-check-input" 
+                            type="radio" name="gender" 
+                            value="option2" 
+                            onChange={e => this.updateField("gender", e.target.value)}
+                        />
+                        <span className="form-check-label"> Female</span>
+                        </label>
+                    </div>  */}
+                    {/* <!-- form-group end.// --> */}
+                    {/* <div className="form-row">
+                        <div className="form-group col-md-6">
+                        <label>City</label>
+                        <input 
+                            type="text" 
+                            className="form-control"
+                            onChange={e => this.updateField("city", e.target.value)} />
+                        </div> 
+                        <div className="form-group col-md-6">
+                        <label>Country</label>
+                        <select 
+                            id="inputState" 
+                            className="form-control"
+                            onChange={e => this.updateField("country", e.target.value)}>
+                            <option> Choose...</option>
+                            <option>Uzbekistan</option>
+                            <option>Russia</option>
+                            <option selected="">United States</option>
+                            <option>India</option>
+                            <option>Afganistan</option>
+                        </select>
+                        </div> 
+                    </div>  */}
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input 
+                            className="form-control" 
+                            type="password"
+                            onChange={e => this.updateField("password", e.target.value)}
+                            />
+                    </div> 
+                    <div className="form-group">
+                        <div className='position-relative'>
+                            <label>Confirm Password</label>
+                            <input 
+                                className="form-control" 
+                                type="password"
+                                onChange={e => this.updateField("password", e.target.value)}
+                                />
+                            <div className="position-absolute" style={{fontSize: "35px",top: "-60px", right: "1%"}}>
+                                <i className="fa fa-eye" ></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <button type="submit" className="btn btn-primary btn-block"> Register  </button>
+                    </div> 
+                    <small className="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br/> Terms of use and Privacy Policy.</small>                                          
+                </form>
+                </article> 
+                <div className="border-top card-body text-center">Have an account? <Link to="">Log In</Link></div>
+                </div> 
+                </div> 
 
+                </div> 
+                </div> 
 
-<div class="row justify-content-center">
-<div class="col-md-6">
-<div class="card">
-<header class="card-header">
-	<a href="" class="float-right btn btn-outline-primary mt-1">Log in</a>
-	<h4 class="card-title mt-2">Sign up</h4>
-</header>
-<article class="card-body">
-<form>
-	<div class="form-row">
-		<div class="col form-group">
-			<label>First name </label>   
-		  	<input type="text" class="form-control" placeholder="" />
-		</div> 
-        {/* <!-- form-group end.// --> */}
-		<div class="col form-group">
-			<label>Last name</label>
-		  	<input type="text" class="form-control" placeholder=" "/>
-		</div> 
-        {/* <!-- form-group end.// --> */}
-	</div>
-    {/* <!-- form-row end.// --> */}
-	<div class="form-group">
-		<label>Email address</label>
-		<input type="email" class="form-control" placeholder="" />
-		<small class="form-text text-muted">We'll never share your email with anyone else.</small>
-	</div>
-     {/* <!-- form-group end.// --> */}
-	<div class="form-group">
-			<label class="form-check form-check-inline">
-		  <input class="form-check-input" type="radio" name="gender" value="option1" />
-		  <span class="form-check-label"> Male </span>
-		</label>
-		<label class="form-check form-check-inline">
-		  <input class="form-check-input" type="radio" name="gender" value="option2" />
-		  <span class="form-check-label"> Female</span>
-		</label>
-	</div> 
-    {/* <!-- form-group end.// --> */}
-	<div class="form-row">
-		<div class="form-group col-md-6">
-		  <label>City</label>
-		  <input type="text" class="form-control" />
-		</div> 
-        {/* <!-- form-group end.// --> */}
-		<div class="form-group col-md-6">
-		  <label>Country</label>
-		  <select id="inputState" class="form-control">
-		    <option> Choose...</option>
-		      <option>Uzbekistan</option>
-		      <option>Russia</option>
-		      <option selected="">United States</option>
-		      <option>India</option>
-		      <option>Afganistan</option>
-		  </select>
-		</div> 
-        {/* <!-- form-group end.// --> */}
-	</div> 
-    {/* <!-- form-row.// --> */}
-	<div class="form-group">
-		<label>Create password</label>
-	    <input class="form-control" type="password" />
-	</div> 
-    {/* <!-- form-group end.// -->   */}
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-block"> Register  </button>
-    </div> 
-    {/* <!-- form-group// -->       */}
-    <small class="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br/> Terms of use and Privacy Policy.</small>                                          
-</form>
-</article> 
-{/* <!-- card-body end .// --> */}
-<div class="border-top card-body text-center">Have an account? <a href="">Log In</a></div>
-</div> 
-{/* <!-- card.// --> */}
-</div> 
-{/* <!-- col.//--> */}
-
-</div> 
-{/* <!-- row.//--> */}
-
-
-</div> 
-{/* <!--container end.//--> */}
-
-<br/><br/>
-<article class="bg-secondary mb-3">  
-<div class="card-body text-center">
-    <h3 class="text-white mt-3">Bootstrap 4 UI KIT</h3>
-<p class="h5 text-white">Components and templates  <br/> for Ecommerce, marketplace, booking websites 
-and product landing pages</p>   <br/>
-<p><a class="btn btn-warning" target="_blank" href="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com  
- <i class="fa fa-window-restore "></i></a></p>
-</div>
-<br/><br/>
-</article>
+                <br/><br/>
+                <article className="bg-secondary mb-3">  
+                <div className="card-body text-center">
+                    <h3 className="text-white mt-3">Bootstrap 4 UI KIT</h3>
+                <p className="h5 text-white">Components and templates  <br/> for Ecommerce, marketplace, booking websites 
+                and product landing pages</p>   <br/>
+                <p><Link className="btn btn-warning" target="_blank" to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com  
+                <i className="fa fa-window-restore "></i></Link></p>
+                </div>
+                <br/><br/>
+                </article>
             </>
         );
     }
