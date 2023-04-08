@@ -29,7 +29,7 @@ class Register extends Component {
         formdata.append('country', this.state.country);
         formdata.append('city', this.state.city);
 
-        if (this.state.lastname && this.state.email && this.state.password) {
+        if (this.state.firstname && this.state.email && this.state.password) {
             console.log('bond')
             fetch('http://127.0.0.1:8000/api/utilisateur/inscription', {
                 method: 'POST',
