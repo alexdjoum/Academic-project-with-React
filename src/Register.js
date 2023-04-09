@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { json, Link } from 'react-router-dom';
 
 class Register extends Component {
     state = {
@@ -21,26 +21,37 @@ class Register extends Component {
     handlingForm = (e) => {
         e.preventDefault()
         const formdata = new FormData();
-        formdata.append('lastname',this.state.lastname);
+        //formdata.append('lastname',this.state.lastname);
         formdata.append('name', this.state.firstname);
         formdata.append('password', this.state.password);
         formdata.append('email',this.state.email);
-        formdata.append('gender', this.state.gender);
-        formdata.append('country', this.state.country);
-        formdata.append('city', this.state.city);
+        //formdata.append('gender', this.state.gender);
+        //formdata.append('country', this.state.country);
+        //formdata.append('city', this.state.city);
+        const dataForm = {
+            name: this.state.firstname,
+            password: this.state.password,
+            email: this.state.email
+        }
 
         if (this.state.firstname && this.state.email && this.state.password) {
             console.log('bond')
+            console.log({
+                "name": "zaza",
+                "email": "alex@gmail.org",
+                "password": "Admin0"
+            })
+
             fetch('http://127.0.0.1:8000/api/utilisateur/inscription', {
                 method: 'POST',
-                body: JSON.stringify({ formdata }),
+                body: JSON.stringify(dataForm),
                 headers: { 'Content-Type': 'application/json' },
               })
                 .then(res => console.log(res.json()) )
                 //.then(json => this.setState(res.))
         }
 
-        console.log(...formdata);
+        //console.log(...formdata);
     }
     render() {
         console.log(this.state.firstname)
