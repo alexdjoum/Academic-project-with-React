@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
-import { json, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class Register extends Component {
     state = {
         loader: false,
         error: false,
         firstname: "",
-        lastname: "",
+        //lastname: "",
         email: "",
         password: "",
-        gender: "",
-        country: "",
-        city: ""
+        //gender: "",
+        //country: "",
+        //city: "",
+        typePassword: "text"
     }
 
     updateField = (field, value) => {
         // parent className change handler is always called with field name and value
         this.setState({[field]: value});
+    }
+
+    updateTypePassword = () => {
+        if(this.state.typePassword === "text"){
+            this.setState({typePassword : "password"})
+        }
+        else {
+            this.setState({typePassword : "text"})
+        }
+        console.log('typePassword ===>>', this.state.typePassword)
     }
     handlingForm = (e) => {
         e.preventDefault()
@@ -30,36 +41,34 @@ class Register extends Component {
         //formdata.append('city', this.state.city);
         const dataForm = {
             name: this.state.firstname,
-            password: this.state.password,
-            email: this.state.email
+            email: this.state.email,
+            password: this.state.password
+            
         }
 
         if (this.state.firstname && this.state.email && this.state.password) {
-            console.log('bond')
-            console.log({
-                "name": "zaza",
-                "email": "alex@gmail.org",
-                "password": "Admin0"
-            })
-
+            this.setState(prevState => ({
+                loader: !prevState.loader}))
             fetch('http://127.0.0.1:8000/api/utilisateur/inscription', {
                 method: 'POST',
                 body: JSON.stringify(dataForm),
                 headers: { 'Content-Type': 'application/json' },
               })
-                .then(res => console.log(res.json()) )
+                .then(res => res.json())
+                .then(this.setState({firstname: "", email: "", password: "" }))
+                console.log("loader1 ==> ", this.state.loader)
                 //.then(json => this.setState(res.))
         }
 
         //console.log(...formdata);
     }
     render() {
-        console.log(this.state.firstname)
-        // const {loader, error, firstname, lastname, email, password, gender, country, city} = this.state;
+        const {loader, error, firstname, email, password} = this.state;
+        console.log("bref ==> ",{loader, firstname, email, password});
         return (
             <>
                 <div className="container">
-                <br/>  <p className="text-center">More bootstrap 4 components on <Link to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</Link></p>
+                {/* <br/>  <p className="text-center">More bootstrap 4 components on <Link to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</Link></p> */}
                 <hr/>
                 <div className="row justify-content-center">
                 <div className="col-md-6">
@@ -151,7 +160,8 @@ class Register extends Component {
                         <label>Password</label>
                         <input 
                             className="form-control" 
-                            type="password"
+                            //ref={inputRef}
+                            type={this.state.typePassword}
                             onChange={e => this.updateField("password", e.target.value)}
                             />
                     </div> 
@@ -160,11 +170,11 @@ class Register extends Component {
                             <label>Confirm Password</label>
                             <input 
                                 className="form-control" 
-                                type="password"
+                                type={this.state.typePassword}
                                 onChange={e => this.updateField("password", e.target.value)}
                                 />
                             <div className="position-absolute" style={{fontSize: "35px",top: "-60px", right: "1%"}}>
-                                <i className="fa fa-eye" ></i>
+                                <i className="fa fa-eye"  onClick={this.updateTypePassword}></i>
                             </div>
                         </div>
                     </div>
@@ -182,16 +192,16 @@ class Register extends Component {
                 </div> 
 
                 <br/><br/>
-                <article className="bg-secondary mb-3">  
-                <div className="card-body text-center">
-                    <h3 className="text-white mt-3">Bootstrap 4 UI KIT</h3>
-                <p className="h5 text-white">Components and templates  <br/> for Ecommerce, marketplace, booking websites 
-                and product landing pages</p>   <br/>
-                <p><Link className="btn btn-warning" target="_blank" to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com  
-                <i className="fa fa-window-restore "></i></Link></p>
-                </div>
+                {/* <article className="bg-secondary mb-3">   */}
+                {/* <div className="card-body text-center"> */}
+                    {/* <h3 className="text-white mt-3">Bootstrap 4 UI KIT</h3> */}
+                {/* <p className="h5 text-white">Components and templates  <br/> for Ecommerce, marketplace, booking websites  */}
+                {/* and product landing pages</p>   <br/> */}
+                {/* <p><Link className="btn btn-warning" target="_blank" to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com   */}
+                {/* <i className="fa fa-window-restore "></i></Link></p> */}
+                {/* </div> */}
                 <br/><br/>
-                </article>
+                {/* </article> */}
             </>
         );
     }
