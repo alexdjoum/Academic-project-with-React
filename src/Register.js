@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, createRef} from 'react';
 import { Link } from 'react-router-dom';
 
+const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 class Register extends Component {
     state = {
         loader: false,
@@ -9,23 +10,37 @@ class Register extends Component {
         //lastname: "",
         email: "",
         password: "",
+        confirmPas: "",
         //gender: "",
         //country: "",
         //city: "",
-        typePassword: "text"
+        typePassword: "text",
+        
     }
-
+   inputRef = createRef(null);
     updateField = (field, value) => {
         // parent className change handler is always called with field name and value
         this.setState({[field]: value});
     }
 
+    isPasswordValid = (pwd, isConfirm) => {
+        if (isConfirm) {
+            return this.state.password === pwd;
+        }
+
+        // Make password check here
+        return checkPwd.test(pwd)
+    }
+    
+
     updateTypePassword = () => {
         if(this.state.typePassword === "text"){
-            this.setState({typePassword : "password"})
+            this.setState({typePassword : "password"});
+            this.inputRef.current.focus();
         }
         else {
-            this.setState({typePassword : "text"})
+            this.setState({typePassword : "text"});
+            this.inputRef.current.focus();
         }
         console.log('typePassword ===>>', this.state.typePassword)
     }
@@ -45,25 +60,32 @@ class Register extends Component {
             password: this.state.password
             
         }
-
+        
+        
         if (this.state.firstname && this.state.email && this.state.password) {
             this.setState(prevState => ({
-                loader: !prevState.loader}))
-            fetch('http://127.0.0.1:8000/api/utilisateur/inscription', {
+                loader: !prevState.loader}));
+              
+                    // Typical usage (don't forget to compare props):
+                    fetch('http://127.0.0.1:8000/api/utilisateur/inscription', {
                 method: 'POST',
                 body: JSON.stringify(dataForm),
                 headers: { 'Content-Type': 'application/json' },
               })
                 .then(res => res.json())
-                .then(this.setState({firstname: "", email: "", password: "" }))
+                .then((data)=> this.setState({firstname: "", email: "", password: "" , loader: false}))
                 console.log("loader1 ==> ", this.state.loader)
+                //this.props.navigation.navigate("login")
                 //.then(json => this.setState(res.))
+                //this.props.navigation.navigate("/login");
+                //  Navigate('/login');
+            
         }
 
         //console.log(...formdata);
     }
     render() {
-        const {loader, error, firstname, email, password} = this.state;
+        const {loader, firstname, email, password, confirmPas} = this.state;
         console.log("bref ==> ",{loader, firstname, email, password});
         return (
             <>
@@ -74,7 +96,7 @@ class Register extends Component {
                 <div className="col-md-6">
                 <div className="card">
                 <header className="card-header">
-                    <Link to="" className="float-right btn btn-outline-primary mt-1">Log in</Link>
+                    <Link to={"/login"} className="float-right btn btn-outline-primary mt-1">Log in</Link>
                     <h4 className="card-title mt-2">Sign up</h4>
                 </header>
                 <article className="card-body">
@@ -105,7 +127,7 @@ class Register extends Component {
                         <input 
                             type="email" 
                             className="form-control" 
-                            placeholder="" 
+                            value={this.state.email}
                             onChange={e => this.updateField("email", e.target.value)}    
                         />
                         <small className="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -157,26 +179,64 @@ class Register extends Component {
                         </div> 
                     </div>  */}
                     <div className="form-group">
-                        <label>Password</label>
-                        <input 
-                            className="form-control" 
-                            //ref={inputRef}
-                            type={this.state.typePassword}
-                            onChange={e => this.updateField("password", e.target.value)}
-                            />
+                        
+                            <label>Password</label>
+                            <div class="position-relative">
+                                <input 
+                                    className="form-control" 
+                                    value={this.state.password}
+                                    ref={this.inputRef}
+                                    type={this.state.typePassword}
+                                    onFocus={(e) => this.updateField('password', e.target.value)}
+                                    onBlur={(e) => this.updateField('password', e.target.value)}
+                                    onChange={e => this.updateField("password", e.target.value)}
+                                    />
+                                <div className="position-absolute" style={{fontSize: "35px",top: "-18%", right: "3%"}}>
+                                    <i className="fa fa-eye"  onClick={this.updateTypePassword}></i>
+                                </div>
+                            </div> 
+                            <p
+                                id="pwdnote"
+                                className={this.state.password && !this.isPasswordValid(password, false)/*password*/ ? "instructions" : "offscreen"}>
+                                {/* <FontAwesomeIcon icon={faInfoCircle}/> */}
+                                <span> At least 6 characters </span>
+                                <span>Must include uppercase and lowercase letters, a number and a special character </span>
+                                <span aria-label="exclamation mark">!</span>
+                                <span aria-label="at symbol">@ </span>
+                                <span aria-label="hashtag"># </span>
+                                <span aria-label="dollar sign">$ </span>
+                                <span aria-label="percent">%</span>
+                            </p>
+                          
+                       
                     </div> 
                     <div className="form-group">
+                        <label>Confirm Password</label>
                         <div className='position-relative'>
-                            <label>Confirm Password</label>
                             <input 
                                 className="form-control" 
                                 type={this.state.typePassword}
-                                onChange={e => this.updateField("password", e.target.value)}
+                                value={this.state.confirmPas}
+                                onFocus={(e) => this.updateField('confirmPas', e.target.value)}
+                                onBlur={(e) => this.updateField('confirmPas', e.target.value)}
+                                onChange={e => this.updateField("confirmPas", e.target.value)}
                                 />
-                            <div className="position-absolute" style={{fontSize: "35px",top: "-60px", right: "1%"}}>
-                                <i className="fa fa-eye"  onClick={this.updateTypePassword}></i>
-                            </div>
+                            
                         </div>
+                        <p
+                            id="pwdnote"
+                            className={!this.isPasswordValid(confirmPas, true)/*password*/ ? "instructions" : "offscreen"}>
+                            {/* <FontAwesomeIcon icon={faInfoCircle}/> */}
+                            <span> At least 6 characters </span>
+                            <span>Must match the first password input field</span>
+                            <span aria-label="exclamation mark">!</span>
+                            <span aria-label="at symbol">@ </span>
+                            <span aria-label="hashtag"># </span>
+                            <span aria-label="dollar sign">$ </span>
+                            <span aria-label="percent">%</span>
+                        </p>
+                       
+
                     </div>
                     <div className="form-group">
                         <button type="submit" className="btn btn-primary btn-block"> Register  </button>
@@ -184,7 +244,7 @@ class Register extends Component {
                     <small className="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br/> Terms of use and Privacy Policy.</small>                                          
                 </form>
                 </article> 
-                <div className="border-top card-body text-center">Have an account? <Link to="">Log In</Link></div>
+                <div className="border-top card-body text-center">Have an account? <Link to="/login">Log In</Link></div>
                 </div> 
                 </div> 
 
