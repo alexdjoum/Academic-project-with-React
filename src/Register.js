@@ -1,5 +1,7 @@
 import React, { Component, createRef} from 'react';
-import { Link } from 'react-router-dom';
+import { Link,Navigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 class Register extends Component {
@@ -11,6 +13,7 @@ class Register extends Component {
         email: "",
         password: "",
         confirmPas: "",
+        status: null,
         //gender: "",
         //country: "",
         //city: "",
@@ -73,22 +76,33 @@ class Register extends Component {
                 headers: { 'Content-Type': 'application/json' },
               })
                 .then(res => res.json())
-                .then((data)=> this.setState({firstname: "", email: "", password: "" , loader: false}))
+                .then((data)=> this.setState({firstname: data.data.name , email: data.data.email, password: data.data.password , loader: false, status: data.status}))
                 console.log("loader1 ==> ", this.state.loader)
                 //this.props.navigation.navigate("login")
                 //.then(json => this.setState(res.))
-                //this.props.navigation.navigate("/login");
-                //  Navigate('/login');
+                
+                
             
         }
 
         //console.log(...formdata);
     }
     render() {
-        const {loader, firstname, email, password, confirmPas} = this.state;
+        const {loader, firstname, email, password, confirmPas, status} = this.state;
         console.log("bref ==> ",{loader, firstname, email, password});
         return (
             <>
+                {/* 
+                     
+                 */}
+                <div className='d-flex justify-content-center'>
+                    {loader && (
+                        <Box sx={{ display: 'flex' }}>
+                            <CircularProgress />
+                        </Box>
+                    )}
+                </div>
+                
                 <div className="container">
                 {/* <br/>  <p className="text-center">More bootstrap 4 components on <Link to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</Link></p> */}
                 <hr/>
@@ -100,6 +114,7 @@ class Register extends Component {
                     <h4 className="card-title mt-2">Sign up</h4>
                 </header>
                 <article className="card-body">
+                {(firstname && email && status) && <Navigate to='/login'/>}
                 <form onSubmit={this.handlingForm}>
                     <div className="form-row">
                         <div className="col form-group">
