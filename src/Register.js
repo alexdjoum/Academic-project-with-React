@@ -20,7 +20,7 @@ class Register extends Component {
         typePassword: "text",
         
     }
-   inputRef = createRef(null);
+   inputRef = createRef();
     updateField = (field, value) => {
         // parent className change handler is always called with field name and value
         this.setState({[field]: value});
