@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 class Login extends Component {
@@ -7,6 +9,7 @@ class Login extends Component {
         loader: false,
         error: false,
         firstname: "",
+        status: null,
         //lastname: "",
         email: "",
         password: "",
@@ -15,6 +18,7 @@ class Login extends Component {
         //country: "",
         //city: "",
         typePassword: "text",
+        token: null
         
     }
 
@@ -33,23 +37,50 @@ class Login extends Component {
     }
 
     updateTypePassword = () => {
-        if(this.state.typePassword === "text"){
-            this.setState({typePassword : "password"});
-            //this.inputRef.current.focus();
-        }
-        else {
-            this.setState({typePassword : "text"});
-            //this.inputRef.current.focus();
-        }
-        console.log('typePassword ===>>', this.state.typePassword)
+        this.setState(prevState =>({typePassword : prevState.typePassword === "password" ? "text" : "password"}))
+        
     }
 
+    handlingLoginForm = (e) => {
+        e.preventDefault()
+        const dataform= {
+            email: this.state.email,
+            password: this.state.password
+        }
+        console.log("data du formulaire ===> ",dataform)
+        if (this.state.email && this.state.password) {
+            this.setState(prevState => ({
+                loader: !prevState.loader})
+            );
+            
+            //console.log('dada form login ===>>>> ', dataform)
+            fetch('http://localhost:8000/api/utilisateur/connexion', {
+                method: 'POST',
+                body: JSON.stringify(dataform),
+                headers: { 'Content-Type': 'application/json' },
+            })
+            .then(res => res.json())
+            .then(data => this.setState({loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name}))
+            //.catch((error) => console.log("his error ====>>>", error))
+            // .then(data => this.setState({
+            //     loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name
+            // }))
+        }
+    }
     
 
     render() {
-        const {loader, firstname, email, password, confirmPas} = this.state;
+        const {loader, firstname, email, password} = this.state;
+        console.log("bref ==> ",{loader, firstname, email});
         return (
             <>
+            <div className='d-flex justify-content-center'>
+                    {loader && (
+                        <Box sx={{ display: 'flex' }}>
+                            <CircularProgress />
+                        </Box>
+                    )}
+                </div>
             <div className="container">
             {/* <br/>  <p className="text-center">More bootstrap 4 components on <Link to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</Link></p> */}
             <hr/>
@@ -61,7 +92,7 @@ class Login extends Component {
                 <h4 className="card-title mt-2">Login</h4>
             </header>
             <article className="card-body">
-            <form onSubmit={this.handlingForm}>
+            <form onSubmit={this.handlingLoginForm}>
                 {/* <div className="form-row">
                     <div className="col form-group">
                         <label>First name </label>   
