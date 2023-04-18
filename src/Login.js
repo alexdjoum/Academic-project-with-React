@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { connect } from 'react-redux';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 class Login extends Component {
@@ -71,6 +72,7 @@ class Login extends Component {
 
     render() {
         const {loader, firstname, email, password} = this.state;
+        const {allUsers} = this.props
         console.log("bref ==> ",{loader, firstname, email});
         return (
             <>
@@ -81,6 +83,11 @@ class Login extends Component {
                         </Box>
                     )}
                 </div>
+                
+                    <p>{allUsers.map(user =>(
+                        <span>user.id</span>
+                    ))}</p>
+                
             <div className="container">
             {/* <br/>  <p className="text-center">More bootstrap 4 components on <Link to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</Link></p> */}
             <hr/>
@@ -258,5 +265,9 @@ class Login extends Component {
         );
     }
 }
+const mapStateToProps =(state) => {
+    const { allUsers } = state
+    return { allUsers }
+  }
 
-export default Login;
+export default connect(mapStateToProps)(Login);
