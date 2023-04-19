@@ -1,19 +1,24 @@
 import { LOGIN_USER_SUCCESSFUL } from '../constants/user'
 
 const initialState = {
-  products: [
-    {
+  user: {
     id: 1,
-    title: "my t-shirt",
-    category: "programmer"
-    }
-  ]
+    name: "",
+    email: "",
+    itsregistered: false
+  }
 }
 
 export default function UserReducer(state = initialState, {type, payload}) {
   switch (type) {
     case 'LOGIN_USER_SUCCESSFUL': 
       return state;
+    case 'I_JUST_REGISTERED':
+      return {
+        id: 1,
+        name: "Djoum Alex",
+        itsregistered: true
+      };
     default:
       return state
   }

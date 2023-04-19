@@ -2,6 +2,7 @@ import React, { Component, createRef} from 'react';
 import { Link,Navigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { connect } from 'react-redux';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 class Register extends Component {
@@ -76,7 +77,7 @@ class Register extends Component {
                 headers: { 'Content-Type': 'application/json' },
               })
                 .then(res => res.json())
-                .then((data)=> this.setState({firstname: data.data.name , email: data.data.email, password: data.data.password , loader: false, status: data.status}))
+                .then((data)=> {this.props.ijustregistered({itsregistered: true}); this.setState({firstname: data.data.name , email: data.data.email, password: data.data.password , loader: false, status: data.status})})
                 console.log("loader1 ==> ", this.state.loader)
                 //this.props.navigation.navigate("login")
                 //.then(json => this.setState(res.))
@@ -89,6 +90,7 @@ class Register extends Component {
     }
     render() {
         const {loader, firstname, email, password, confirmPas, status} = this.state;
+        //const {itsregistered} = this.props
         console.log("bref ==> ",{loader, firstname, email, password});
         return (
             <>
@@ -282,4 +284,13 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapDispatchToProps = (dispatch) => {
+    return {
+      // dispatching plain actions
+      ijustregistered: () => dispatch({ type: 'I JUST REGISTERED' }),
+      //decrement: () => dispatch({ type: 'DECREMENT' }),
+      //reset: () => dispatch({ type: 'RESET' }),
+    }
+  }
+
+export default connect(null, mapDispatchToProps)(Register);

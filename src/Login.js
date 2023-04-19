@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { connect } from 'react-redux';
@@ -72,21 +72,18 @@ class Login extends Component {
 
     render() {
         const {loader, firstname, email, password} = this.state;
-        const {allUsers} = this.props
+        const {user} = this.props
+        console.log("my user ====>>> ", user)
         console.log("bref ==> ",{loader, firstname, email});
         return (
             <>
             <div className='d-flex justify-content-center'>
-                    {loader && (
-                        <Box sx={{ display: 'flex' }}>
-                            <CircularProgress />
-                        </Box>
-                    )}
-                </div>
-                
-                    <p>{allUsers.map(user =>(
-                        <span>user.id</span>
-                    ))}</p>
+                {loader && (
+                    <Box sx={{ display: 'flex' }}>
+                        <CircularProgress />
+                    </Box>
+                )}
+            </div>
                 
             <div className="container">
             {/* <br/>  <p className="text-center">More bootstrap 4 components on <Link to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com</Link></p> */}
@@ -99,6 +96,7 @@ class Login extends Component {
                 <h4 className="card-title mt-2">Login</h4>
             </header>
             <article className="card-body">
+            {(firstname && email) && <Navigate to='/user'/>}
             <form onSubmit={this.handlingLoginForm}>
                 {/* <div className="form-row">
                     <div className="col form-group">
@@ -251,23 +249,16 @@ class Login extends Component {
             </div> 
 
             <br/><br/>
-            {/* <article className="bg-secondary mb-3">   */}
-            {/* <div className="card-body text-center"> */}
-                {/* <h3 className="text-white mt-3">Bootstrap 4 UI KIT</h3> */}
-            {/* <p className="h5 text-white">Components and templates  <br/> for Ecommerce, marketplace, booking websites  */}
-            {/* and product landing pages</p>   <br/> */}
-            {/* <p><Link className="btn btn-warning" target="_blank" to="http://bootstrap-ecommerce.com/"> Bootstrap-ecommerce.com   */}
-            {/* <i className="fa fa-window-restore "></i></Link></p> */}
-            {/* </div> */}
+            
             <br/><br/>
-            {/* </article> */}
+            
         </>
         );
     }
 }
 const mapStateToProps =(state) => {
-    const { allUsers } = state
-    return { allUsers }
+    const { user } = state
+    return { user }
   }
 
 export default connect(mapStateToProps)(Login);
