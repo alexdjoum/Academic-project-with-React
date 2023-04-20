@@ -3,6 +3,7 @@ import { Link,Navigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { connect } from 'react-redux';
+import { ActionTypes } from './constants/action-types';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 class Register extends Component {
@@ -68,24 +69,30 @@ class Register extends Component {
         
         if (this.state.firstname && this.state.email && this.state.password) {
             this.setState(prevState => ({
-                loader: !prevState.loader}));
+                loader: !prevState.loader})
+            );
               
-                    // Typical usage (don't forget to compare props):
-                    fetch('http://127.0.0.1:8000/api/utilisateur/inscription', {
-                method: 'POST',
-                body: JSON.stringify(dataForm),
-                headers: { 'Content-Type': 'application/json' },
-              })
+                // Typical usage (don't forget to compare props):
+            fetch('http://127.0.0.1:8000/api/utilisateur/inscription', 
+                {
+                    method: 'POST',
+                    body: JSON.stringify(dataForm),
+                    headers: { 'Content-Type': 'application/json' },
+                })
                 .then(res => res.json())
-                .then((data)=> {this.props.ijustregistered({itsregistered: true}); this.setState({firstname: data.data.name , email: data.data.email, password: data.data.password , loader: false, status: data.status})})
-                console.log("loader1 ==> ", this.state.loader)
-                //this.props.navigation.navigate("login")
-                //.then(json => this.setState(res.))
-                
-                
-            
+                .then((data)=> {this.props.iJustRegistered({itsRegistered: true}); 
+                    this.setState(
+                        {
+                            firstname: data.data.name , 
+                            email: data.data.email, 
+                            password: data.data.password , 
+                            loader: false, status: data.status
+                        }
+                    )})
+            console.log("loader1 ==> ", this.state.loader)
+            //this.props.navigation.navigate("login")
+            //.then(json => this.setState(res.))
         }
-
         //console.log(...formdata);
     }
     render() {
@@ -287,10 +294,10 @@ class Register extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
       // dispatching plain actions
-      ijustregistered: () => dispatch({ type: 'I JUST REGISTERED' }),
+      iJustRegistered: () => dispatch({ type: ActionTypes.I_JUST_REGISTERED }),
       //decrement: () => dispatch({ type: 'DECREMENT' }),
       //reset: () => dispatch({ type: 'RESET' }),
     }
-  }
+}
 
 export default connect(null, mapDispatchToProps)(Register);

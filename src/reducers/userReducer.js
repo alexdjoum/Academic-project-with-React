@@ -1,4 +1,5 @@
 import { LOGIN_USER_SUCCESSFUL } from '../constants/user'
+import { ActionTypes } from '../constants/action-types';
 
 const initialState = {
   user: {
@@ -13,11 +14,11 @@ export default function UserReducer(state = initialState, {type, payload}) {
   switch (type) {
     case 'LOGIN_USER_SUCCESSFUL': 
       return state;
-    case 'I_JUST_REGISTERED':
+    case ActionTypes.I_JUST_REGISTERED:
       return {
         id: 1,
         name: "Djoum Alex",
-        itsregistered: true
+        itsRegistered: true
       };
     default:
       return state
