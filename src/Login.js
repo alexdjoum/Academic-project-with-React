@@ -2,9 +2,24 @@ import React, { Component } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import { connect } from 'react-redux';
+import TransitionsModal from './Modal';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+  };
 class Login extends Component {
     state = {
         loader: false,
@@ -19,7 +34,8 @@ class Login extends Component {
         //country: "",
         //city: "",
         typePassword: "text",
-        token: null
+        token: null,
+        openModal: false,
         
     }
 
@@ -68,15 +84,18 @@ class Login extends Component {
             // }))
         }
     }
+
     
 
     render() {
-        const {loader, firstname, email, password} = this.state;
+        const {loader, firstname, email, password, openModal} = this.state;
         const {user} = this.props
         console.log("my user ====>>> ", user)
         console.log("bref ==> ",{loader, firstname, email});
         return (
             <>
+            <TransitionsModal />
+            
             <div className='d-flex justify-content-center'>
                 {loader && (
                     <Box sx={{ display: 'flex' }}>
