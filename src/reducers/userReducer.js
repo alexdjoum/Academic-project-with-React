@@ -6,7 +6,9 @@ const initialState = {
     id: 1,
     name: "",
     email: "",
-    itsregistered: false
+    itsregistered: false,
+    iDoDisappearModal: false, 
+    whenModalAppearDoDisappear: false
   }
 }
 
@@ -20,6 +22,14 @@ export default function UserReducer(state = initialState, {type, payload}) {
         name: "Djoum Alex",
         itsRegistered: true
       };
+    case ActionTypes.I_DO_DISAPPEAR_MODAL: 
+      return {
+        iDoDisappearModal: true
+      };
+    case ActionTypes.WHEN_MODAL_DO_DISAPPEAR: 
+      return {
+        whenModalAppearDoDisappear : true
+      }
     default:
       return state
   }

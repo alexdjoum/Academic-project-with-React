@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { connect } from 'react-redux';
 import TransitionsModal from './Modal';
+import { ActionTypes } from './constants/action-types';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 const style = {
@@ -77,7 +78,10 @@ class Login extends Component {
                 headers: { 'Content-Type': 'application/json' },
             })
             .then(res => res.json())
-            .then(data => this.setState({loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name}))
+            .then(data => {
+                //this.props.iDoDisappearModal({iDoDisappearModal: true});
+                this.setState({loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name})
+            })
             //.catch((error) => console.log("his error ====>>>", error))
             // .then(data => this.setState({
             //     loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name
@@ -94,8 +98,9 @@ class Login extends Component {
         console.log("bref ==> ",{loader, firstname, email});
         return (
             <>
+            {user.itsRegistered && (
             <TransitionsModal />
-            
+            )}
             <div className='d-flex justify-content-center'>
                 {loader && (
                     <Box sx={{ display: 'flex' }}>
@@ -278,6 +283,16 @@ class Login extends Component {
 const mapStateToProps =(state) => {
     const { user } = state
     return { user }
-  }
+}
 
-export default connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch) => {
+    return {
+      // dispatching plain actions
+      doDisappearModal: () => dispatch({ type: ActionTypes.I_DO_DISAPPEAR_MODAL }),
+      //decrement: () => dispatch({ type: 'DECREMENT' }),
+      //reset: () => dispatch({ type: 'RESET' }),
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

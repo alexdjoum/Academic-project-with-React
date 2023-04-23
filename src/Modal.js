@@ -5,6 +5,8 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { connect } from 'react-redux';
+import { ActionTypes } from './constants/action-types';
 
 const style = {
   position: 'absolute',
@@ -18,38 +20,54 @@ const style = {
   p: 4,
 };
 
-export default function TransitionsModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const TransitionsModal= (props) => {
+  //const [open, setOpen] = React.useState(false);
+  //const handleOpen = () => setOpen(true);
+  //const handleClose = () => setOpen(false);
 
+  console.log('props ===>>>',props.user)
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
-      <Modal
+      {/* <Button onClick={handleOpen}>Open modal</Button> */}
+      
+        <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
+        open={props.user.itsRegistered}
+        
       >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
-          </Box>
-        </Fade>
+        
+            <Fade 
+            in={props.user.itsRegistered}
+            >
+            <Box sx={style}>
+                <Typography id="transition-modal-title" variant="h6" component="h2">
+                Text in a modal
+                </Typography>
+                <Typography id="transition-modal-description" sx={{ mt: 2 }}>
+                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+                </Typography>
+            </Box>
+            </Fade>
+        
       </Modal>
+      
     </div>
   );
 }
+const mapStateToProps =(state) => {
+    const { user } = state
+    return { user }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+      // dispatching plain actions
+      doDisappearModal: () => dispatch({ type: ActionTypes.I_DO_DISAPPEAR_MODAL }),
+      //decrement: () => dispatch({ type: 'DECREMENT' }),
+      //reset: () => dispatch({ type: 'RESET' }),
+    }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransitionsModal);
