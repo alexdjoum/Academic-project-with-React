@@ -9,14 +9,14 @@ import User from './User';
 function App() {
   return (
     <>
-    <Router>
-      <Routes>
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/user' element={<User/>} />
-      </Routes>
-    </Router>  
-            </>
+      <Router>
+        <Routes>
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/user' element={<User/>} />
+        </Routes>
+      </Router>  
+    </>
   );
 }
 

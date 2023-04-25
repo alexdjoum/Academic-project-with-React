@@ -67,11 +67,14 @@ class Register extends Component {
         }
         
         
+        
         if (this.state.firstname && this.state.email && this.state.password) {
-            this.setState(prevState => ({
-                loader: !prevState.loader})
-            );
-              
+            // this.setState(prevState => ({
+            //     loader: !prevState.loader})
+            // );
+            this.props.loading();
+            
+            
                 // Typical usage (don't forget to compare props):
             fetch('http://127.0.0.1:8000/api/utilisateur/inscription', 
                 {
@@ -80,15 +83,15 @@ class Register extends Component {
                     headers: { 'Content-Type': 'application/json' },
                 })
                 .then(res => res.json())
-                .then((data)=> {this.props.iJustRegistered({itsRegistered: true}); 
-                    this.setState(
-                        {
-                            firstname: data.data.name , 
-                            email: data.data.email, 
-                            password: data.data.password , 
-                            loader: false, status: data.status
-                        }
-                    )})
+                //.then((data)=> {this.props.iJustRegistered({itsRegistered: true}); 
+                    // this.setState(
+                    //     {
+                    //         firstname: data.data.name , 
+                    //         email: data.data.email, 
+                    //         password: data.data.password , 
+                    //         loader: false, status: data.status
+                    //     }
+                    // )
             console.log("loader1 ==> ", this.state.loader)
             //this.props.navigation.navigate("login")
             //.then(json => this.setState(res.))
@@ -215,7 +218,7 @@ class Register extends Component {
                                     onBlur={(e) => this.updateField('password', e.target.value)}
                                     onChange={e => this.updateField("password", e.target.value)}
                                     />
-                                <div className="position-absolute" style={{fontSize: "35px",top: "-18%", right: "3%"}}>
+                                <div className="position-absolute" style={{fontSize: "35px",top: "50%",transform: translateY('-50%'), right: "3%"}}>
                                     <i className="fa fa-eye"  onClick={this.updateTypePassword}></i>
                                 </div>
                             </div> 
@@ -294,7 +297,9 @@ class Register extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
       // dispatching plain actions
-      iJustRegistered: () => dispatch({ type: ActionTypes.I_JUST_REGISTERED }),
+      loading: () => dispatch({ type: ActionTypes.LOADING }),
+      //deleteUser: (id) => dispatch(deleteUser(id))
+      iJustRegistered: () => dispatch({ type: ActionTypes.REGISTER }),
       //decrement: () => dispatch({ type: 'DECREMENT' }),
       //reset: () => dispatch({ type: 'RESET' }),
     }

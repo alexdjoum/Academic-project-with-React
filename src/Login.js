@@ -93,14 +93,14 @@ class Login extends Component {
 
     render() {
         const {loader, firstname, email, password, openModal} = this.state;
-        const {user} = this.props
-        console.log("my user ====>>> ", user)
+        // const {user} = this.props
+        // console.log("my user ====>>> ", user)
         console.log("bref ==> ",{loader, firstname, email});
         return (
             <>
-            {user.itsRegistered && (
+            {/* {user.itsRegistered && ( */}
             <TransitionsModal />
-            )}
+            {/* )} */}
             <div className='d-flex justify-content-center'>
                 {loader && (
                     <Box sx={{ display: 'flex' }}>
@@ -280,19 +280,19 @@ class Login extends Component {
         );
     }
 }
-const mapStateToProps =(state) => {
-    const { user } = state
-    return { user }
-}
+// const mapStateToProps =(state) => {
+//     const { user } = state
+//     return { user }
+// }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-      // dispatching plain actions
-      doDisappearModal: () => dispatch({ type: ActionTypes.I_DO_DISAPPEAR_MODAL }),
-      //decrement: () => dispatch({ type: 'DECREMENT' }),
-      //reset: () => dispatch({ type: 'RESET' }),
-    }
-}
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//       dispatching plain actions
+//       doDisappearModal: () => dispatch({ type: ActionTypes.I_JUST_REGISTERED }),
+//       decrement: () => dispatch({ type: 'DECREMENT' }),
+//       reset: () => dispatch({ type: 'RESET' }),
+//     }
+// }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
+//export default connect(mapStateToProps, mapDispatchToProps)(Login);

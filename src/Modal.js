@@ -24,8 +24,8 @@ const TransitionsModal= (props) => {
   //const [open, setOpen] = React.useState(false);
   //const handleOpen = () => setOpen(true);
   //const handleClose = () => setOpen(false);
-
-  console.log('props ===>>>',props.user)
+  //const doDisappearModal=()=>({itsRegistered: !props.user.itsRegistered});
+  //console.log('props ===>>>',props.user)
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -33,12 +33,13 @@ const TransitionsModal= (props) => {
         <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={props.user.itsRegistered}
+        //open={props.user.itsRegistered}
+        //onClose={()=> props.doDisappearModal({itsRegistered: false})}
         
-      >
+        >
         
             <Fade 
-            in={props.user.itsRegistered}
+            //in={props.user.itsRegistered}
             >
             <Box sx={style}>
                 <Typography id="transition-modal-title" variant="h6" component="h2">
@@ -55,19 +56,20 @@ const TransitionsModal= (props) => {
     </div>
   );
 }
-const mapStateToProps =(state) => {
-    const { user } = state
-    return { user }
-}
+// const mapStateToProps =(state) => {
+//     const { user } = state
+//     return { user }
+// }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-      // dispatching plain actions
-      doDisappearModal: () => dispatch({ type: ActionTypes.I_DO_DISAPPEAR_MODAL }),
-      //decrement: () => dispatch({ type: 'DECREMENT' }),
-      //reset: () => dispatch({ type: 'RESET' }),
-    }
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//       dispatching plain actions
+//       doDisappearModal: () => dispatch(),
+//       decrement: () => dispatch({ type: 'DECREMENT' }),
+//       reset: () => dispatch({ type: 'RESET' }),
+//     }
 
-}
+// }
+export default TransitionsModal;
 
-export default connect(mapStateToProps, mapDispatchToProps)(TransitionsModal);
+//export default connect(mapStateToProps, mapDispatchToProps)(TransitionsModal);
