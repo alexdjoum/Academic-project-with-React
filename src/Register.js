@@ -22,6 +22,7 @@ class Register extends Component {
         typePassword: "text",
         
     }
+   
    inputRef = createRef();
     updateField = (field, value) => {
         // parent className change handler is always called with field name and value
@@ -72,7 +73,7 @@ class Register extends Component {
             // this.setState(prevState => ({
             //     loader: !prevState.loader})
             // );
-            this.props.loading();
+            this.props.loading({loading: true});
             
             
                 // Typical usage (don't forget to compare props):
@@ -83,7 +84,8 @@ class Register extends Component {
                     headers: { 'Content-Type': 'application/json' },
                 })
                 .then(res => res.json())
-                //.then((data)=> {this.props.iJustRegistered({itsRegistered: true}); 
+                .then((data)=> this.props.dispatch({ type: ActionTypes.REGISTER, payload: data.data })); 
+                //{this.props.iJustRegistered({loading: false , payload: null})}
                     // this.setState(
                     //     {
                     //         firstname: data.data.name , 
@@ -92,7 +94,7 @@ class Register extends Component {
                     //         loader: false, status: data.status
                     //     }
                     // )
-            console.log("loader1 ==> ", this.state.loader)
+            //console.log("loader1 ==> ", this.state.loader)
             //this.props.navigation.navigate("login")
             //.then(json => this.setState(res.))
         }
@@ -100,15 +102,16 @@ class Register extends Component {
     }
     render() {
         const {loader, firstname, email, password, confirmPas, status} = this.state;
-        //const {itsregistered} = this.props
-        console.log("bref ==> ",{loader, firstname, email, password});
+        const {user} = this.props
+        // console.log("bonjour ========>>>>>", user);
+        // console.log("bref ==> ",{loader, firstname, email, password});
         return (
             <>
                 {/* 
                      
                  */}
                 <div className='d-flex justify-content-center'>
-                    {loader && (
+                    {user.loading && (
                         <Box sx={{ display: 'flex' }}>
                             <CircularProgress />
                         </Box>
@@ -218,7 +221,7 @@ class Register extends Component {
                                     onBlur={(e) => this.updateField('password', e.target.value)}
                                     onChange={e => this.updateField("password", e.target.value)}
                                     />
-                                <div className="position-absolute" style={{fontSize: "35px",top: "50%",transform: translateY('-50%'), right: "3%"}}>
+                                <div className="position-absolute" style={{fontSize: "35px",top: "50%",transform: "translateY(-50%)", right: "3%"}}>
                                     <i className="fa fa-eye"  onClick={this.updateTypePassword}></i>
                                 </div>
                             </div> 
@@ -294,6 +297,11 @@ class Register extends Component {
     }
 }
 
+const mapStateToProps =(state) => {
+    const { user } = state
+    return { user }
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
       // dispatching plain actions
@@ -305,4 +313,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

@@ -15,6 +15,12 @@ export default function UserReducer(state = initialState, {type, payload}){
         loading: true,
         error: null
       }
+    case ActionTypes.REGISTER:
+      return {
+        ...state,
+        content: payload,
+        
+      }
       default:
         return state
   }
