@@ -268,7 +268,12 @@ class Register extends Component {
                     <small className="text-muted">By clicking the 'Sign Up' button, you confirm that you accept our <br/> Terms of use and Privacy Policy.</small>                                          
                 </form>
                 </article> 
-                <div className="border-top card-body text-center">Have an account? <Link to="/login">Log In</Link></div>
+                <div className="border-top card-body text-center">
+                    Have an account? 
+                    <Link to="/login">
+                        Log In
+                    </Link>
+                </div>
                 </div> 
                 </div> 
 

@@ -77,7 +77,14 @@ class Login extends Component {
                 headers: { 'Content-Type': 'application/json' },
             })
             .then(res => res.json())
-            .then(data => this.setState({loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name}))
+            .then(data => {
+                this.setState({
+                    loader: false, 
+                    email: data.utilisateur.email, 
+                    firstname: data.utilisateur.name
+                }); 
+                localStorage.setItem('token', data.token);
+            })
             //.catch((error) => console.log("his error ====>>>", error))
             // .then(data => this.setState({
             //     loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name
@@ -146,7 +153,13 @@ class Login extends Component {
                         value={this.state.email}
                         onChange={e => this.updateField("email", e.target.value)}    
                     />
-                    <small className="form-text text-muted">We'll never share your email with anyone else.</small>
+                    <small
+                        className="form-text
+                        text-muted"
+                    >
+                        We'll
+                        never share your email with anyone else.
+                    </small>
                 </div>
                 {/* <!-- form-group end.// --> */}
                 {/* <div className="form-group">
