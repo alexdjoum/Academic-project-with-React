@@ -4,6 +4,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { connect } from 'react-redux';
 import { ActionTypes } from './constants/action-types';
+import { authenticationError, authenticationLoading, authenticationSuccess } from './actions/userActions';
 
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 class Register extends Component {
@@ -73,9 +74,7 @@ class Register extends Component {
             // this.setState(prevState => ({
             //     loader: !prevState.loader})
             // );
-            this.props.loading({loading: true});
-            
-            
+            this.props.authenticationLoading();
                 // Typical usage (don't forget to compare props):
             fetch('http://127.0.0.1:8000/api/utilisateur/inscription', 
                 {
@@ -84,7 +83,8 @@ class Register extends Component {
                     headers: { 'Content-Type': 'application/json' },
                 })
                 .then(res => res.json())
-                .then((data)=> this.props.dispatch({ type: ActionTypes.REGISTER, payload: data.data })); 
+                .then((data)=> {this.props.authenticationSuccess(data.utilisateur); this.setState({status: data.status})})
+                .catch(error => this.props.authenticationError(error)); 
                 //{this.props.iJustRegistered({loading: false , payload: null})}
                     // this.setState(
                     //     {
@@ -101,9 +101,9 @@ class Register extends Component {
         //console.log(...formdata);
     }
     render() {
-        const {loader, firstname, email, password, confirmPas, status} = this.state;
+        const {password, status, confirmPas} = this.state;
         const {user} = this.props
-        // console.log("bonjour ========>>>>>", user);
+        console.log("status ========>>>>>", user);
         // console.log("bref ==> ",{loader, firstname, email, password});
         return (
             <>
@@ -129,10 +129,10 @@ class Register extends Component {
                     <h4 className="card-title mt-2">Sign up</h4>
                 </header>
                 <article className="card-body">
-                {(firstname && email && status) && <Navigate to='/login'/>}
+                {status && <Navigate to='/login'/>}
                 <form onSubmit={this.handlingForm}>
                     <div className="form-row">
-                        <div className="col form-group">
+                       <div className="col form-group">
                             <label>First name </label>   
                             <input 
                                 type="text" 
@@ -304,10 +304,10 @@ const mapStateToProps =(state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      // dispatching plain actions
-      loading: () => dispatch({ type: ActionTypes.LOADING }),
-      //deleteUser: (id) => dispatch(deleteUser(id))
-      iJustRegistered: () => dispatch({ type: ActionTypes.REGISTER }),
+      authenticationLoading: () => dispatch(authenticationLoading()),
+      authenticationSuccess: (user) => dispatch(authenticationSuccess(user)),
+      authenticationError: (error) => dispatch(authenticationError(error)),
+      doDisappearModal: () => dispatch({ type: ActionTypes.I_JUST_REGISTERED }),
       //decrement: () => dispatch({ type: 'DECREMENT' }),
       //reset: () => dispatch({ type: 'RESET' }),
     }

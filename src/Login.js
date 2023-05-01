@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal';
 import { connect } from 'react-redux';
 import TransitionsModal from './Modal';
 import { ActionTypes } from './constants/action-types';
-
+import { authenticationError, authenticationLoading, authenticationSuccess } from './actions/userActions';
 const checkPwd = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 const style = {
     position: 'absolute',
@@ -67,9 +67,8 @@ class Login extends Component {
         }
         console.log("data du formulaire ===> ",dataform)
         if (this.state.email && this.state.password) {
-            this.setState(prevState => ({
-                loader: !prevState.loader})
-            );
+            // 
+            this.props.authenticationLoading()
             
             //console.log('dada form login ===>>>> ', dataform)
             fetch('http://localhost:8000/api/utilisateur/connexion', {
@@ -79,8 +78,11 @@ class Login extends Component {
             })
             .then(res => res.json())
             .then(data => {
-                //this.props.iDoDisappearModal({iDoDisappearModal: true});
-                this.setState({loader: false, email: data.utilisateur.email, firstname: data.utilisateur.name})
+                this.props.authenticationSuccess(data.utilisateur);
+                localStorage.setItem('token', data.token)
+            })
+            .catch(error => {
+                this.props.authenticationError(error)
             })
             //.catch((error) => console.log("his error ====>>>", error))
             // .then(data => this.setState({
@@ -102,7 +104,7 @@ class Login extends Component {
             <TransitionsModal />
             {/* )} */}
             <div className='d-flex justify-content-center'>
-                {loader && (
+                {this.props.user.loading && (
                     <Box sx={{ display: 'flex' }}>
                         <CircularProgress />
                     </Box>
@@ -120,7 +122,7 @@ class Login extends Component {
                 <h4 className="card-title mt-2">Login</h4>
             </header>
             <article className="card-body">
-            {(firstname && email) && <Navigate to='/user'/>}
+            {window.localStorage.getItem('token') && <Navigate to='/user'/>}
             <form onSubmit={this.handlingLoginForm}>
                 {/* <div className="form-row">
                     <div className="col form-group">
@@ -280,19 +282,21 @@ class Login extends Component {
         );
     }
 }
-// const mapStateToProps =(state) => {
-//     const { user } = state
-//     return { user }
-// }
+const mapStateToProps =(state) => {
+    const { user } = state
+    return { user }
+}
 
-// const mapDispatchToProps = (dispatch) => {
-//     return {
-//       dispatching plain actions
-//       doDisappearModal: () => dispatch({ type: ActionTypes.I_JUST_REGISTERED }),
-//       decrement: () => dispatch({ type: 'DECREMENT' }),
-//       reset: () => dispatch({ type: 'RESET' }),
-//     }
-// }
+const mapDispatchToProps = (dispatch) => {
+    return {
+      authenticationLoading: () => dispatch(authenticationLoading()),
+      authenticationSuccess: (user) => dispatch(authenticationSuccess(user)),
+      authenticationError: (error) => dispatch(authenticationError(error)),
+      doDisappearModal: () => dispatch({ type: ActionTypes.I_JUST_REGISTERED }),
+      //decrement: () => dispatch({ type: 'DECREMENT' }),
+      //reset: () => dispatch({ type: 'RESET' }),
+    }
+}
 
-export default Login;
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 //export default connect(mapStateToProps, mapDispatchToProps)(Login);

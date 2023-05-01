@@ -11,15 +11,20 @@ export default function UserReducer(state = initialState, {type, payload}){
   switch (type) {
     case ActionTypes.LOADING:
       return {
-        content: null,
-        loading: true,
-        error: null
-      }
-    case ActionTypes.REGISTER:
-      return {
         ...state,
+        loading: true,
+      }
+    case ActionTypes.AUTHENTICATION:
+      return {
+        loading: false,
+        error: null,
         content: payload,
-        
+      }
+    case ActionTypes.AUTHENTICATION_ERROR:
+      return {
+        loading: false,
+        error: payload || new Error("Erreur lors de l'authentification"),
+        content: null ,
       }
       default:
         return state
