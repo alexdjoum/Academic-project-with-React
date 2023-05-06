@@ -5,13 +5,13 @@ export const members = [
         firstname: "ALEX MARTIAL",
         Description:"I SPEAK FRENCH AND A BIT ENGLISH",
         email: "kammegnealex@gmail.com",
-        image: "",
+        image: "/images/alex.jpg",
         phone: 676974555
 
     },
     {   id: 2,
         who: "DATA SCIENTIST AND I AM DIGITAL COMMUNICATOR",
-        name: "KENFACK",
+        name: "MABOUET",
         firstname: "CAROLLE",
         Description:"I AM BILINGUAL",
         email: "carole@gmail.com",
@@ -42,18 +42,18 @@ export const members = [
     ,
     {   id: 5,
         who: "WEB DEVELOPPER AND STUDENT",
-        name: "DONKEN",
+        name: "TESSOLEMO",
         firstname: "BOREL",
         Description:"I AM A GENIUS",
         email: "borel@gmail.com",
         image: "",
-        phone: 676974555
+        phone: 656987416
 
     },
     {   id: 6,
         who: "I AM DIGITAL COMMUNICATOR",
-        name: "MAGALA DONFACK",
-        firstname: "CHRISTIAN",
+        name: "MAGALA",
+        firstname: "LOIC STEVE",
         Description:"I AM BILINGUAL",
         email: "magala@gmail.com",
         image: "",

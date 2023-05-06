@@ -10,16 +10,16 @@ class User extends Component {
               <div className="row">
                 {
                   members.map(member => (
-                    <div key={member.id} className="col-lg-3 col-md-4 col-sm-6">
-                      <div className="panel panel-default userlist">
-                        <div className="panel-heading">
-                          <h3 className="page-header small">20+ Projects</h3>
+                    <div key={member.id} className="col-lg-3 col-md-4 col-sm-6 flex-1">
+                      <div className="panel panel-default userlist p-absolute">
+                        <div className="panel-heading h-100 w-100">
+                          {/* <h3 className="page-header small">20+ Projects</h3> */}
                           <p className="page-subtitle small">{member.who}</p>
                           <a href="" className="availablity btn btn-circle btn-success"><i className="fa fa-check"></i></a> </div>
                         <div className="panel-body text-center">
-                          <div className="userprofile">
-                            <div className="userpic"> <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" className="userpicimg" /> </div>
-                            <h3 className="username">{member.name}</h3>
+                          <div className="userprofile mt-15">
+                            <div className="userpic"> <img src={member.image ? member.image : "/images/avatar.png"} alt="" className="userpicimg" /> </div>
+                            <h3 className="username pt-4">{member.name}</h3>
                             <p>{member.firstname}</p>
                           </div>
                           <strong>Information</strong><br />
