@@ -22,11 +22,11 @@ export const members = [
     {   id: 3,
         who: "MOBILE DEVELOPPER",
         name: "DONGMO",
-        firstname: "CABREL ",
+        firstname: "JAURES",
         Description:"",
-        email: "",
-        image: "",
-        phone: 676974555
+        email: "jauresdongmo@gmail.com",
+        image: "/images/cabrel.jpg",
+        phone: 658097020
 
     },
     {   id: 4,
@@ -35,7 +35,7 @@ export const members = [
         firstname: "IGOR",
         Description:"I AM BILINGUAL",
         email: "igor@gmail.com",
-        image: "",
+        image: "/images/igor.jpg",
         phone: 676974555
 
     },
@@ -46,7 +46,7 @@ export const members = [
         firstname: "BOREL",
         Description:"I AM A GENIUS",
         email: "borel@gmail.com",
-        image: "",
+        image: "/images/borel.jpg",
         phone: 656987416
 
     },
@@ -56,17 +56,17 @@ export const members = [
         firstname: "LOIC STEVE",
         Description:"I AM BILINGUAL",
         email: "magala@gmail.com",
-        image: "",
+        image: "/images/magala.jpg",
         phone: 676974555
 
     },
     {   id: 7,
         who: "CIA",
-        name: "JEREMY",
-        firstname: "KENGNE",
+        name: "OTELE",
+        firstname: "BORIS",
         Description:"I lean data scien",
         email: "jeremy@gmail.com",
-        image: "",
+        image: "/images/boris.jpg",
         phone: 676974555
 
     }
