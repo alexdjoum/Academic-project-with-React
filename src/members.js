@@ -23,7 +23,7 @@ export const members = [
         who: "MOBILE DEVELOPPER",
         name: "DONGMO",
         firstname: "JAURES",
-        Description:"",
+        Description:"I SPEAK FRENCH AND A BIT ENGLISH",
         email: "jauresdongmo@gmail.com",
         image: "/images/cabrel.jpg",
         phone: 658097020

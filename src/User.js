@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { members } from './members';
-//import Navbar from './Navbar';
+import Navbar from './Navbar';
 import './user.css';
 
 
 class User extends Component {
   render() {
       return (
-      
+       <>
+         <Navbar />
         <div className='page'>
             <div className="container">
               <div className="row">
@@ -42,6 +43,7 @@ class User extends Component {
               </div>
             </div>
           </div>
+       </>
                             
         );
     }
